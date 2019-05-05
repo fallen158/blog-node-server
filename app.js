@@ -4,7 +4,7 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-
+const sessionConf = require('./db/redis.js')
 const users = require('./routes/users')
 const blog = require('./routes/blog')
 
@@ -28,6 +28,8 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
+app.keys = ['APNG@#_8932jbhdjsa_!ds139821DKLSPCCNOP22705246122814837']
+app.use(sessionConf)
 // routes
 app.use(users.routes(), users.allowedMethods())
 app.use(blog.routes(), blog.allowedMethods())

@@ -1,28 +1,32 @@
-const Router = require('koa-router');
-const router = new Router({ prefix: '/api/user' });
-const { SussesMode, ErrorMode } = require('../model/resModel');
-const { register, login } = require('../controller/user');
-
-router.get('/', async (ctx, next) => {
-  ctx.body = 'this is a users response!';
-});
+const Router = require('koa-router')
+const router = new Router({ prefix: '/api/user' })
+const { register, login } = require('../controller/user')
+const { ErrorModel } = require('../model/resModel')
 
 router.post('/login', async ctx => {
-  const { username, password } = ctx.request.body;
-  const data = await register(username, password);
-  if (data) {
-    ctx.body = new SussesMode('注册成功');
+  try {
+    const { username, password } = ctx.request.body
+    const data = await login(username, password)
+    if (data.data) {
+      ctx.session.username = data.data.username
+      ctx.session.realname = data.data.realname
+    }
+    ctx.body = data
+  } catch (error) {
+    ctx.status = 500
+    ctx.body = new ErrorModel('服务器错误')
   }
-});
+})
 
 router.post('/register', async ctx => {
-  const { username, password } = ctx.request.body;
-  const data = await register(username, password);
-  if (data) {
-    ctx.body = new SussesMode('注册成功');
-    return;
+  try {
+    const { username, password } = ctx.request.body
+    const result = await register(username, password)
+    ctx.body = result
+  } catch (error) {
+    ctx.status = 500
+    ctx.body = new ErrorModel('服务器错误')
   }
-  ctx.body = new ErrorMode('注册失败');
-});
+})
 
-module.exports = router;
+module.exports = router

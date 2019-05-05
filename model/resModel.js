@@ -14,14 +14,14 @@ class BassMode {
   }
 }
 
-class SussesMode extends BassMode {
+class SussessModel extends BassMode {
   constructor (data, message) {
     super(data, message)
     this.code = 0
   }
 }
 
-class ErrorMode extends BassMode {
+class ErrorModel extends BassMode {
   constructor (data, message) {
     super(data, message)
     this.code = 1
@@ -29,6 +29,6 @@ class ErrorMode extends BassMode {
 }
 
 module.exports = {
-  SussesMode,
-  ErrorMode
+  SussessModel,
+  ErrorModel
 }
